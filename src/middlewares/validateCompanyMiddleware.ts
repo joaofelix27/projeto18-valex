@@ -11,7 +11,6 @@ export async function validateCompany(
   const { rows: companies } = await companyRepository.getCompany(xapikey);
   if (companies.length) {
     res.locals.company = companies[0];
-    return res.sendStatus(200)
     next()
   } else {
     throw { type: "error_company_notFound", message: "Insert a valid API KEY" };
