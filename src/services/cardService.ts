@@ -6,6 +6,19 @@ import Cryptr from 'cryptr'
 
 const cryptr = new Cryptr('myTotallySecretKey');
 
+function getExpirationDate (expeditionDate:string){
+    const auxArray:Array<string>=expeditionDate.split("/")
+    return auxArray[0]+"/"+`${Number(auxArray[1])+5}`
+    }
+    function getCardName (name:string) {
+        const namesArray:Array<string>=name.split(" ")
+        const firstName=namesArray.shift()
+        const lastName=namesArray.pop()
+        const namesFiltered:Array<string> = namesArray.filter( name =>  name.length>=3 ) //Return only the middle names that have more than 3 letters
+        const firstLetters:string= namesFiltered.map( name => name.charAt(0)).join(" ")
+        return (firstName+ " " + firstLetters+ " " + lastName)
+    }
+
 export async function createCard(employeeId:number,type:string) {
     const cardTypes:any={groceries:true, restaurant:true, transport:true, education:true, health:true}
     if(!cardTypes[type]){
@@ -20,7 +33,7 @@ export async function createCard(employeeId:number,type:string) {
         throw {type:"error_card_notCreated", message:"Employee already has a card with this type"}
     }
     const name=user[0]?.fullName?.toUpperCase()
-    const cardNumber:string=faker.finance.creditCardNumber('###############L')
+    const cardNumber:number=Number(faker.finance.creditCardNumber('###############L'))
     const creditCardCVV:string=faker.finance.creditCardCVV()
     const cardExpeditionDate:string=dayjs().format('MM/YY')
     const cardExpirationDate:string=getExpirationDate(cardExpeditionDate)
@@ -30,15 +43,7 @@ export async function createCard(employeeId:number,type:string) {
     // const desencryptedCVV = cryptr.decrypt(encryptedCVV);
 }
 
-function getExpirationDate (expeditionDate:string){
-const auxArray:Array<string>=expeditionDate.split("/")
-return auxArray[0]+"/"+`${Number(auxArray[1])+5}`
+export async function activateCard (cardId:number,cardCVC:number,password:number) {
+
 }
-function getCardName (name:string) {
-    const namesArray:Array<string>=name.split(" ")
-    const firstName=namesArray.shift()
-    const lastName=namesArray.pop()
-    const namesFiltered:Array<string> = namesArray.filter( name =>  name.length>=3 ) //Return only the middle names that have more than 3 letters
-    const firstLetters:string= namesFiltered.map( name => name.charAt(0)).join(" ")
-    return (firstName+ " " + firstLetters+ " " + lastName)
-}
+
