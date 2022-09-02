@@ -12,3 +12,7 @@ export function createCard (employeeId:number,number:number,cardHolderName:strin
 export function getCard (id:number) {
     return connection.query(`SELECT * FROM cards WHERE id=$1`,[id])
 }
+
+export function createCardPassword (password:string,id:number) {
+    return connection.query(`UPDATE cards SET password=$1 WHERE id=$2`,[password,id])
+}

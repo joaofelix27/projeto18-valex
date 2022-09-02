@@ -1,5 +1,6 @@
 import * as employeeRepository from '../repositories/empolyeeRepository'
 import * as cardRepository from '../repositories/cardRepository'
+import bcrypt from "bcrypt";
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
 import Cryptr from 'cryptr'
@@ -40,11 +41,24 @@ export async function createCard(employeeId:number,type:string) {
     const cardExpirationDate:string=getExpirationDate(cardExpeditionDate)
     const encryptedCVV = cryptr.encrypt(creditCardCVV);
     const cardName=getCardName(name)
-    return await cardRepository.createCard(employeeId,cardNumber,cardName,creditCardCVV,cardExpirationDate,type)
-    // const desencryptedCVV = cryptr.decrypt(encryptedCVV);
+    return await cardRepository.createCard(employeeId,cardNumber,cardName,encryptedCVV,cardExpirationDate,type)
 }
 
 export async function activateCard (cardId:number,cardCVC:number,password:number) {
+    const { rows: card } = await cardRepository.getCard(cardId);
+    const encryptedPassword:string = bcrypt.hashSync(password.toString(),10)
 
+    const currentCard = card[0]
+
+    if(currentCard?.password) throw {type:"error_card_notActivated", message:"Card already activated"}
+
+    const currentCardCVC= currentCard?.securityCode
+    const desencryptedCVV:number = Number( cryptr.decrypt(currentCardCVC))
+    console.log(desencryptedCVV)
+
+    if (desencryptedCVV!==Number(cardCVC)) throw {type:"error_card_notActivated", message:"Security Code invalid!"}
+
+
+   return await cardRepository.createCardPassword(encryptedPassword,cardId)
 }
 

@@ -26,7 +26,7 @@ export async function activateCard(req:Request,res:Response) {
     const result:any = await cardService.activateCard(cardId,cardCVC,password)
     
     if (result) {
-    return res.sendStatus(201)
+    return res.sendStatus(200)
     } else {
         throw {type:"error_card_notCreated", message:"Card could not be created"}
     }
