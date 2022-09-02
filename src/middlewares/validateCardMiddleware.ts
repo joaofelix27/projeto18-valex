@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as cardRepository from "../repositories/cardRepository";
-
-export interface activateType  {
-  cardId:number,cardCVC:number,password:number
-}
+import { activateType } from "../generic/interfaces/interfaces";
+import * as defaultFunctions from '../generic/functions/functions'
 
 export async function validateCard(
   req: Request,
@@ -24,7 +22,9 @@ type isExpiredType = (
 ) => Promise<any>
 
 const isExpired :(isExpiredType)= async (card) => {
-  console.log(card[0]?.expirationDate)
-
+  const todayDate= defaultFunctions.getTodayDate().split("/")
+  const expirationDate=card[0]?.expirationDate.split("/")
+  if (expirationDate[1]>todayDate[1]) return false
+  else if (expirationDate[1]===todayDate[1] && expirationDate[0]>=todayDate[0] ) return false
  return true
 }

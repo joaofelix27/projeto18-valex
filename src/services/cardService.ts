@@ -3,6 +3,7 @@ import * as cardRepository from '../repositories/cardRepository'
 import { faker } from '@faker-js/faker'
 import dayjs from 'dayjs'
 import Cryptr from 'cryptr'
+import * as defaultFunctions from '../generic/functions/functions'
 
 const cryptr = new Cryptr('myTotallySecretKey');
 
@@ -35,7 +36,7 @@ export async function createCard(employeeId:number,type:string) {
     const name=user[0]?.fullName?.toUpperCase()
     const cardNumber:number=Number(faker.finance.creditCardNumber('###############L'))
     const creditCardCVV:string=faker.finance.creditCardCVV()
-    const cardExpeditionDate:string=dayjs().format('MM/YY')
+    const cardExpeditionDate:string=defaultFunctions.getTodayDate()
     const cardExpirationDate:string=getExpirationDate(cardExpeditionDate)
     const encryptedCVV = cryptr.encrypt(creditCardCVV);
     const cardName=getCardName(name)

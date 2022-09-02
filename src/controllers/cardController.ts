@@ -1,6 +1,6 @@
 import { Response,Request } from "express";
+import { activateType } from "../generic/interfaces/interfaces";
 import * as cardService from '../services/cardService'
-import {activateType} from '../middlewares/validateCardMiddleware'
 
 interface createType  {
     employeeId:number,type:string
