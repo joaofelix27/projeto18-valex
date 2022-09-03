@@ -1,5 +1,5 @@
-import * as cardRepository from "../repositories/cardRepository";
 import * as defaultFunctions from "../generic/functions/functions";
+import { insertPurchase } from "../repositories/purchaseRepository";
 
 
 export async function purchase(cardId:number,price:number,password:string,businessId:number) {
@@ -7,7 +7,9 @@ export async function purchase(cardId:number,price:number,password:string,busine
 
     defaultFunctions.verifyPassword(currentCard,password)
 
-  if (currentCard.isBlocked) throw { type: "error_card_not(Un)Blocked", message: "This card is blocked", };
+  if (currentCard.isBlocked) throw { type: "error_block", message: "This card is blocked", };
+  const enoughBalance= await defaultFunctions.getBalance(cardId,price)
+  if (!enoughBalance) throw { type: "error_purchase", message: "Not enough balance", };
 
-  return await cardRepository.blockCard(cardId);
+  return await insertPurchase(cardId,businessId,price);
 }

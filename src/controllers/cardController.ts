@@ -40,7 +40,7 @@ export async function blockCard(req:Request,res:Response) {
     if (result) {
     return res.sendStatus(200)
     } else {
-        throw {type:"error_card_not(Un)Blocked", message:"Card could not be blocked"}
+        throw {type:"error_block", message:"Card could not be blocked"}
   
 }
 }
@@ -64,7 +64,7 @@ export async function rechargeCard(req:Request,res:Response) {
     const result:any = await cardService.rechargeCard(cardId,recharge)
     
     if (result) {
-    return res.sendStatus(200)
+    return res.sendStatus(201)
     } else {
         throw {type:"error_card_notRecharged", message:"Card could not be recharged"}
     }

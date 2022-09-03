@@ -92,7 +92,7 @@ export async function blockCard(cardId: number, password: string) {
 
     defaultFunctions.verifyPassword(currentCard,password)
 
-  if (currentCard.isBlocked) throw { type: "error_card_not(Un)Blocked", message: "This card is already blocked", };
+  if (currentCard.isBlocked) throw { type: "error_block", message: "This card is already blocked", };
 
   return await cardRepository.blockCard(cardId);
 }
@@ -102,7 +102,7 @@ export async function unblockCard(cardId: number, password: string) {
   
     defaultFunctions.verifyPassword(currentCard,password)
   
-    if (!currentCard.isBlocked) throw { type: "error_card_not(Un)Blocked", message: "This card is already unblocked", };
+    if (!currentCard.isBlocked) throw { type: "error_block", message: "This card is already unblocked", };
   
     return await cardRepository.unblockCard(cardId);
   }

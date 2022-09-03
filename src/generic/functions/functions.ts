@@ -1,6 +1,7 @@
 import dayjs from "dayjs"
 import bcrypt from "bcrypt";
 import * as cardRepository from "../../repositories/cardRepository";
+import * as purchaseRepository from "../../repositories/purchaseRepository";
 
 export const getTodayDate = () => {
     return dayjs().format('MM/YY')
@@ -34,4 +35,18 @@ export function getCardName(name: string) {
     .map((name) => name.charAt(0))
     .join(" ");
   return firstName + " " + firstLetters + " " + lastName;
+}
+
+export async function getBalance (id:number,price:number) {
+  const { rows: recharges } = await  purchaseRepository.getRecharge(id);
+  if(recharges.length){
+    const rechargesTotal:any = recharges[0]?.amount;
+    const { rows: purchases } = await  purchaseRepository.getPurchase(id);
+    if (!purchases.length && price<=rechargesTotal) return true
+    const purchasesTotal:any = purchases[0]?.amount;
+    const balance = rechargesTotal-purchasesTotal-price
+    if(balance>=0) return true
+  }
+  return false
+
 }
