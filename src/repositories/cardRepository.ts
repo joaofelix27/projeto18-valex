@@ -16,3 +16,10 @@ export function getCard (id:number) {
 export function createCardPassword (password:string,id:number) {
     return connection.query(`UPDATE cards SET password=$1 WHERE id=$2`,[password,id])
 }
+
+export function blockCard (id:number) {
+    return connection.query(`UPDATE cards SET "isBlocked"=true WHERE id=$1`,[id])
+}
+export function unblockCard (id:number) {
+    return connection.query(`UPDATE cards SET "isBlocked"=false WHERE id=$1`,[id])
+}

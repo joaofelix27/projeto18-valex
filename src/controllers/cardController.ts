@@ -1,5 +1,5 @@
 import { Response,Request } from "express";
-import { activateType } from "../generic/interfaces/interfaces";
+import { activateType, blockType } from "../generic/interfaces/interfaces";
 import * as cardService from '../services/cardService'
 
 interface createType  {
@@ -28,7 +28,32 @@ export async function activateCard(req:Request,res:Response) {
     if (result) {
     return res.sendStatus(200)
     } else {
-        throw {type:"error_card_notCreated", message:"Card could not be created"}
+        throw {type:"error_card_notActivated", message:"Card could not be activated"}
+    }
+
+}
+export async function blockCard(req:Request,res:Response) {
+    const blockData: blockType = req.body
+    const {cardId,password}=blockData
+    const result:any = await cardService.blockCard(cardId,password)
+    
+    if (result) {
+    return res.sendStatus(200)
+    } else {
+        throw {type:"error_card_not(Un)Blocked", message:"Card could not be blocked"}
+  
+}
+}
+
+export async function unblockCard(req:Request,res:Response) {
+    const unblockData: blockType = req.body
+    const {cardId,password}=unblockData
+    const result:any = await cardService.unblockCard(cardId,password)
+    
+    if (result) {
+    return res.sendStatus(200)
+    } else {
+        throw {type:"error_card_not(Un)Blocked", message:"Card could not be unblocked"}
     }
 
 }
