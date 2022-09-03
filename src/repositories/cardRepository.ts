@@ -23,3 +23,7 @@ export function blockCard (id:number) {
 export function unblockCard (id:number) {
     return connection.query(`UPDATE cards SET "isBlocked"=false WHERE id=$1`,[id])
 }
+
+export function rechargeCard (id:number,recharge:number) {
+    return connection.query(`INSERT INTO recharges ("cardId",amount) VALUES ($1,$2)`,[id,recharge])
+}

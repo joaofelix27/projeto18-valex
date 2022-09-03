@@ -9,7 +9,7 @@ export async function validateCard(
   next: NextFunction
 ) {
   const activationData: activateType = req.body
-  const {cardId,cardCVC,password}=activationData
+  const {cardId}=activationData
   const { rows: card } = await cardRepository.getCard(cardId);
   if (!card.length) throw { type: "error_card_notActivated", message: "Insert a valid cardId" };
   const expired= await isExpired(card);

@@ -1,5 +1,5 @@
 import { Response,Request } from "express";
-import { activateType, blockType } from "../generic/interfaces/interfaces";
+import { activateType, blockType, rechargeType } from "../generic/interfaces/interfaces";
 import * as cardService from '../services/cardService'
 
 interface createType  {
@@ -54,6 +54,19 @@ export async function unblockCard(req:Request,res:Response) {
     return res.sendStatus(200)
     } else {
         throw {type:"error_card_not(Un)Blocked", message:"Card could not be unblocked"}
+    }
+
+}
+
+export async function rechargeCard(req:Request,res:Response) {
+    const rechargeData: rechargeType = req.body
+    const {cardId,recharge}=rechargeData
+    const result:any = await cardService.rechargeCard(cardId,recharge)
+    
+    if (result) {
+    return res.sendStatus(200)
+    } else {
+        throw {type:"error_card_notRecharged", message:"Card could not be recharged"}
     }
 
 }

@@ -5,3 +5,6 @@ export interface activateType  {
   export interface blockType  {
     cardId:number,password:number
   }
+  export interface rechargeType  {
+    cardId:number,recharge:number
+  }

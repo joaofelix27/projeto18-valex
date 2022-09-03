@@ -26,7 +26,6 @@ function getCardName(name: string) {
 }
 
 function verifyPassword(currentCard:any,password:number) {
-    if (!currentCard?.password) throw { type: "error_card_not(Un)Blocked", message: "This card has not been activated yet" };
     const verifyPassword = bcrypt.compareSync(
       password.toString(),
       currentCard?.password
@@ -39,8 +38,6 @@ function verifyPassword(currentCard:any,password:number) {
     const currentCard:any = card[0];
     return currentCard
   }
-
-
 export async function createCard(employeeId: number, type: string) {
   const cardTypes: any = {
     groceries: true,
@@ -140,4 +137,8 @@ export async function unblockCard(cardId: number, password: number) {
     return await cardRepository.unblockCard(cardId);
   }
 
+  export async function rechargeCard(cardId: number, recharge: number) {
+    const currentCard=await getCard (cardId)
 
+    return await cardRepository.rechargeCard(cardId,recharge)
+  }
