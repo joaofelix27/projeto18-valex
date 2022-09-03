@@ -1,18 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import * as cardRepository from "../repositories/cardRepository";
-import { activateType } from "../generic/interfaces/interfaces";
+import { purchaseType } from "../generic/interfaces/interfaces";
 import * as defaultFunctions from '../generic/functions/functions'
 
-export async function validateCard(
+export async function validateBusiness(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  const activationData: activateType = req.body
-  const {cardId}=activationData
+  const purchaseData: purchaseType = req.body
+  const {cardId}=purchaseData
   const { rows: card } = await cardRepository.getCard(cardId);
   if (!card.length) throw { type: "error_card_notActivated", message: "Insert a valid cardId" };
-  res.locals.card=card[0]
   const expired= await isExpired(card);
   if (expired) throw { type: "error_card_notActivated", message: "This card is expired!!" };
   next()
