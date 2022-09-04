@@ -8,7 +8,7 @@ export async function purchase(cardId:number,price:number,password:string,busine
     defaultFunctions.verifyPassword(currentCard,password)
 
   if (currentCard.isBlocked) throw { type: "error_block", message: "This card is blocked", };
-  const enoughBalance= await defaultFunctions.getBalance(cardId,price)
+  const enoughBalance= await defaultFunctions.enoughBalance(cardId,price)
   if (!enoughBalance) throw { type: "error_purchase", message: "Not enough balance", };
 
   return await insertPurchase(cardId,businessId,price);

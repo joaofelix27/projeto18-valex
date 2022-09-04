@@ -37,7 +37,7 @@ export function getCardName(name: string) {
   return firstName + " " + firstLetters + " " + lastName;
 }
 
-export async function getBalance (id:number,price:number) {
+export async function enoughBalance (id:number,price:number) {
   const { rows: recharges } = await  purchaseRepository.getRecharge(id);
   if(recharges.length){
     const rechargesTotal:any = recharges[0]?.amount;
@@ -48,5 +48,16 @@ export async function getBalance (id:number,price:number) {
     if(balance>=0) return true
   }
   return false
+
+}
+export async function getBalance (id:number) {
+  const { rows: recharges } = await  purchaseRepository.getRecharge(id);
+  if (!recharges.length) return 0
+  const rechargesTotal:any = recharges[0]?.amount;
+  const { rows: purchases } = await  purchaseRepository.getPurchase(id);
+  const purchasesTotal:any = purchases[0]?.amount;
+  if (!purchases.length) return rechargesTotal
+  const balance = rechargesTotal-purchasesTotal
+  return balance
 
 }

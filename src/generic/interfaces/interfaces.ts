@@ -12,4 +12,6 @@ export interface activateType  {
   export interface purchaseType  {
     cardId:number,price:number,password:string,businessId:number
   }
-
+  export interface balanceType  {
+    cardId:number
+  }
