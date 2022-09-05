@@ -1,7 +1,7 @@
 
 # Description
 
-Valex simulates an API that manages a benefit card, generally made available by companies to their employees.
+Valex simulates an API that creates benefit cards by companies to their employees.
 
 </br>
 
@@ -55,7 +55,7 @@ POST /card/activate
 | :--------------- | :------- | :--------------------------------- |
 | `cardId`         | `integer`| **Required**. card Id              |
 | `password`       | `string` | **Required**. card password        |
-| `cardCVC`   | `string` | **Required**. card cvv             |
+| `cardCVC`        | `string` | **Required**. card cvv             |
 
 `Requirements:`
 
@@ -112,7 +112,7 @@ POST /balance
 ### Recharge a card
 
 ```http
-POST /recharges
+POST /recharge
 ```
 
 #### Request:
@@ -142,7 +142,7 @@ POST /purchase
 | `cardId`         | `integer` | **Required**. card Id              |
 | `businessId`     | `integer` | **Required**. card expiration date |
 | `password`       | `string`  | **Required**. card password        |
-| `amount`         | `integer` | **Required**. purchase price       |
+| `price`         | `integer` | **Required**. purchase price       |
 
 #
 
