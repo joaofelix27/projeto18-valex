@@ -12,7 +12,9 @@ export async function createCard(req:Request,res:Response) {
     const result:any = await cardService.createCard(employeeId,type)
     
     if (result) {
-    return res.sendStatus(201)
+    return res.status(201).
+    send(`The employee card with id ${result.currentId} was created and its security code is ${result.creditCardCVV}. 
+    It is of utmost importance to keep this data save because it will be required to further uses!`)
     } else {
         throw {type:"error_card_notCreated", message:"Card could not be created"}
     }

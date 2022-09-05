@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import * as cardRepository from "../repositories/cardRepository";
 import { purchaseType } from "../generic/interfaces/interfaces";
-import * as defaultFunctions from '../generic/functions/functions'
 import { getBusiness } from "../repositories/businessRepository";
 
 export async function validateBusiness(

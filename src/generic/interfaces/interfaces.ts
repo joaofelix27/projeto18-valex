@@ -15,3 +15,7 @@ export interface activateType  {
   export interface balanceType  {
     cardId:number
   }
+
+  export interface onlinePurchaseType  {
+    number:string,name:string,expirationDate:string,cardCVC:string,price:number,businessId:number
+  }

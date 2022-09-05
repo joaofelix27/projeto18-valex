@@ -7,10 +7,11 @@ import activateSchema from "../schemas/activateSchema";
 import blockSchema from "../schemas/blockSchema";
 import rechargeSchema from "../schemas/rechargeSchema";
 import { validateActiveCard } from "../middlewares/validateActiveCardMiddleware";
+import createSchema from "../schemas/createSchema";
 
 const cardRouter= Router();
 
-cardRouter.post("/card/create",validateCompany,createCard)
+cardRouter.post("/card/create",validateSchema(createSchema),validateCompany,createCard)
 cardRouter.post("/card/activate",validateSchema(activateSchema),validateCard,activateCard)
 cardRouter.post("/card/block",validateSchema(blockSchema),validateCard,validateActiveCard,blockCard)
 cardRouter.post("/card/unblock",validateSchema(blockSchema),validateCard,validateActiveCard,unblockCard)

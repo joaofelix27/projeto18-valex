@@ -2,6 +2,8 @@ import dayjs from "dayjs"
 import bcrypt from "bcrypt";
 import * as cardRepository from "../../repositories/cardRepository";
 import * as purchaseRepository from "../../repositories/purchaseRepository";
+import * as businessRepository from "../../repositories/businessRepository";
+import { getBusinessType, isExpiredType } from "../types/types";
 
 export const getTodayDate = () => {
     return dayjs().format('MM/YY')
@@ -60,4 +62,18 @@ export async function getBalance (id:number) {
   const balance = rechargesTotal-purchasesTotal
   return balance
 
+}
+export const isExpired :(isExpiredType)= async (card) => {
+const todayDate= getTodayDate().split("/")
+const expirationDate=card[0]?.expirationDate.split("/")
+if (expirationDate[1]>todayDate[1]) return false
+else if (expirationDate[1]===todayDate[1] && expirationDate[0]>=todayDate[0] ) return false
+return true
+}
+
+export const getBusiness : (getBusinessType) =  async (businessId,currentCard) => {
+  const { rows: businesses } = await businessRepository.getBusiness(businessId);
+  if (!businesses.length) throw { type: "error_business", message: "Insert a valid businessId" };
+  const currentBusiness:any=businesses[0]
+  if(currentCard.type!==currentBusiness.type) throw { type: "error_business", message: "The card type does not match the business type" };
 }

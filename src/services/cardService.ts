@@ -7,7 +7,6 @@ import * as defaultFunctions from "../generic/functions/functions";
 
 const cryptr = new Cryptr("myTotallySecretKey");
 
-
 export async function createCard(employeeId: number, type: string) {
   const cardTypes: any = {
     groceries: true,
@@ -45,10 +44,11 @@ export async function createCard(employeeId: number, type: string) {
   );
   const creditCardCVV: string = faker.finance.creditCardCVV();
   const cardExpeditionDate: string = defaultFunctions.getTodayDate();
-  const cardExpirationDate: string = defaultFunctions.getExpirationDate(cardExpeditionDate);
+  const cardExpirationDate: string =
+    defaultFunctions.getExpirationDate(cardExpeditionDate);
   const encryptedCVV = cryptr.encrypt(creditCardCVV);
   const cardName = defaultFunctions.getCardName(name);
-  return await cardRepository.createCard(
+  const {rows}= await cardRepository.createCard(
     employeeId,
     cardNumber,
     cardName,
@@ -56,6 +56,8 @@ export async function createCard(employeeId: number, type: string) {
     cardExpirationDate,
     type
   );
+  const currentId=rows[0]?.id
+  return {creditCardCVV,currentId}
 }
 
 export async function activateCard(
@@ -74,11 +76,10 @@ export async function activateCard(
       message: "Card already activated",
     };
 
-  const currentCardCVC = currentCard?.securityCode;
-  const desencryptedCVV: number = Number(cryptr.decrypt(currentCardCVC));
-  console.log(desencryptedCVV);
+  const currentCardCVC: string = currentCard?.securityCode;
+  const desencryptedCVV: string = cryptr.decrypt(currentCardCVC);
 
-  if (desencryptedCVV !== Number(cardCVC))
+  if (desencryptedCVV !== cardCVC)
     throw {
       type: "error_card_notActivated",
       message: "Security Code invalid!",
@@ -88,27 +89,29 @@ export async function activateCard(
 }
 
 export async function blockCard(cardId: number, password: string) {
-    const currentCard=await defaultFunctions.getCard (cardId)
+  const currentCard = await defaultFunctions.getCard(cardId);
 
-    defaultFunctions.verifyPassword(currentCard,password)
+  defaultFunctions.verifyPassword(currentCard, password);
 
-  if (currentCard.isBlocked) throw { type: "error_block", message: "This card is already blocked", };
+  if (currentCard.isBlocked)
+    throw { type: "error_block", message: "This card is already blocked" };
 
   return await cardRepository.blockCard(cardId);
 }
 
 export async function unblockCard(cardId: number, password: string) {
-    const currentCard=await defaultFunctions.getCard (cardId)
-  
-    defaultFunctions.verifyPassword(currentCard,password)
-  
-    if (!currentCard.isBlocked) throw { type: "error_block", message: "This card is already unblocked", };
-  
-    return await cardRepository.unblockCard(cardId);
-  }
+  const currentCard = await defaultFunctions.getCard(cardId);
 
-  export async function rechargeCard(cardId: number, recharge: number) {
-    const currentCard=await defaultFunctions.getCard (cardId)
+  defaultFunctions.verifyPassword(currentCard, password);
 
-    return await cardRepository.rechargeCard(cardId,recharge)
-  }
+  if (!currentCard.isBlocked)
+    throw { type: "error_block", message: "This card is already unblocked" };
+
+  return await cardRepository.unblockCard(cardId);
+}
+
+export async function rechargeCard(cardId: number, recharge: number) {
+  const currentCard = await defaultFunctions.getCard(cardId);
+
+  return await cardRepository.rechargeCard(cardId, recharge);
+}

@@ -5,12 +5,16 @@ export function getEmployeeCardsByType (id:number,type:string) {
 }
 
 export function createCard (employeeId:number,number:number,cardHolderName:string,securityCode:string,expirationDate:string,type:string) {
-    return connection.query(`INSERT INTO cards ("employeeId",number,"cardholderName","securityCode","expirationDate",type) VALUES ($1,$2,$3,$4,$5,$6) `
+    return connection.query(`INSERT INTO cards ("employeeId",number,"cardholderName","securityCode","expirationDate",type) VALUES ($1,$2,$3,$4,$5,$6) RETURNING id `
     ,[employeeId,number,cardHolderName,securityCode,expirationDate,type])
 }
 
 export function getCard (id:number) {
     return connection.query(`SELECT * FROM cards WHERE id=$1`,[id])
+}
+
+export function getCardByNumber (number:string) {
+    return connection.query(`SELECT * FROM cards WHERE number=$1`,[number])
 }
 
 export function createCardPassword (password:string,id:number) {
