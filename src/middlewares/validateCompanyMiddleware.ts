@@ -13,6 +13,6 @@ export async function validateCompany(
     res.locals.company = companies[0];
     next()
   } else {
-    throw { type: "error_company_notFound", message: "Insert a valid API KEY" };
+    throw { type: "error_notFound", message: "Insert a valid API KEY" };
   }
 }

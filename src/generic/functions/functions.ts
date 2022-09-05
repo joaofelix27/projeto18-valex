@@ -13,7 +13,7 @@ export function verifyPassword(currentCard:any,password:string) {
       password,
       currentCard?.password
     );
-    if (!verifyPassword) throw { type: "error_card_not(Un)Blocked", message: "Wrong password!" };
+    if (!verifyPassword) throw { type: "error_unAuthorized", message: "Wrong password!" };
   }
 
  export async function getCard(cardId: number) {
@@ -73,7 +73,7 @@ return true
 
 export const getBusiness : (getBusinessType) =  async (businessId,currentCard) => {
   const { rows: businesses } = await businessRepository.getBusiness(businessId);
-  if (!businesses.length) throw { type: "error_business", message: "Insert a valid businessId" };
+  if (!businesses.length) throw { type: "error_badRequest", message: "Insert a valid businessId" };
   const currentBusiness:any=businesses[0]
-  if(currentCard.type!==currentBusiness.type) throw { type: "error_business", message: "The card type does not match the business type" };
+  if(currentCard.type!==currentBusiness.type) throw { type: "error_conflict", message: "The card type does not match the business type" };
 }

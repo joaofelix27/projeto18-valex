@@ -8,6 +8,6 @@ export async function validateActiveCard(
   next: NextFunction
 ) {
   const currentCard:any = res.locals.card;
-  if (!currentCard?.password) throw { type: "error_card_notActivated", message: "This card has not been activated yet" };
+  if (!currentCard?.password) throw { type: "error_unAuthorized", message: "This card has not been activated yet" };
   next()
 }

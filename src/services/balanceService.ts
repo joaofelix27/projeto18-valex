@@ -1,5 +1,6 @@
 import * as defaultFunctions from "../generic/functions/functions";
 import * as balanceRepository from '../repositories/balanceRepository'
+import dayjs from "dayjs";
 
 
 export async function balance(cardId:number) {

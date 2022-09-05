@@ -12,10 +12,10 @@ export async function purchase(
   defaultFunctions.verifyPassword(currentCard, password);
 
   if (currentCard.isBlocked)
-    throw { type: "error_block", message: "This card is blocked" };
+    throw { type: "error_unAuthorized", message: "This card is blocked" };
   const enoughBalance = await defaultFunctions.enoughBalance(cardId, price);
   if (!enoughBalance)
-    throw { type: "error_purchase", message: "Not enough balance" };
+    throw { type: "error_preCondition", message: "Not enough balance" };
 
   return await insertPurchase(cardId, businessId, price);
 }
@@ -28,10 +28,10 @@ export async function onlinePurchase(
   const currentCard = await defaultFunctions.getCard(cardId);
   await defaultFunctions.getBusiness(businessId, currentCard);
   if (currentCard.isBlocked)
-    throw { type: "error_block", message: "This card is blocked" };
+    throw { type: "error_unAuthorized", message: "This card is blocked" };
   const enoughBalance = await defaultFunctions.enoughBalance(cardId, price);
   if (!enoughBalance)
-    throw { type: "error_purchase", message: "Not enough balance" };
+    throw { type: "error_preCondition", message: "Not enough balance" };
 
   return await insertPurchase(cardId, businessId, price);
 }

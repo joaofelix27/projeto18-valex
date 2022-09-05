@@ -11,7 +11,7 @@ export async function balance(req:Request,res:Response) {
     if (result) {
     return res.status(200).send({balance:result})
     } else {
-        throw {type:"error_balance", message:"It was not possible to get your balance"}
+        throw {type:"error", message:"It was not possible to get your balance"}
     }
 
 }

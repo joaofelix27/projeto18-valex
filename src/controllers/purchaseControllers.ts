@@ -11,7 +11,7 @@ export async function purchase(req:Request,res:Response) {
     if (result) {
     return res.sendStatus(201)
     } else {
-        throw {type:"error_purchase", message:"Purchase could not be completed"}
+        throw {type:"error", message:"Purchase could not be completed"}
     }
 
 }
@@ -24,7 +24,7 @@ export async function onlinePurchase(req:Request,res:Response) {
     if (result) {
     return res.sendStatus(201)
     } else {
-        throw {type:"error_purchase", message:"The online purchase could not be completed"}
+        throw {type:"error", message:"The online purchase could not be completed"}
     }
 
 }

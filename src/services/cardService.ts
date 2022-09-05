@@ -17,7 +17,7 @@ export async function createCard(employeeId: number, type: string) {
   };
   if (!cardTypes[type]) {
     throw {
-      type: "error_card_notCreated",
+      type: "error_badRequest",
       message: "This type of card is not available",
     };
   }
@@ -28,13 +28,13 @@ export async function createCard(employeeId: number, type: string) {
   );
   if (user.length < 1) {
     throw {
-      type: "error_card_notCreated",
+      type: "error_notFound",
       message: "Employee id is not registred in the database yet",
     };
   }
   if (cards.length > 0) {
     throw {
-      type: "error_card_notCreated",
+      type: "error_conflict",
       message: "Employee already has a card with this type",
     };
   }
@@ -72,7 +72,7 @@ export async function activateCard(
 
   if (currentCard?.password)
     throw {
-      type: "error_card_notActivated",
+      type: "error_conflict",
       message: "Card already activated",
     };
 
@@ -81,7 +81,7 @@ export async function activateCard(
 
   if (desencryptedCVV !== cardCVC)
     throw {
-      type: "error_card_notActivated",
+      type: "error_unAuthorized",
       message: "Security Code invalid!",
     };
 
@@ -94,7 +94,7 @@ export async function blockCard(cardId: number, password: string) {
   defaultFunctions.verifyPassword(currentCard, password);
 
   if (currentCard.isBlocked)
-    throw { type: "error_block", message: "This card is already blocked" };
+    throw { type: "error_conflict", message: "This card is already blocked" };
 
   return await cardRepository.blockCard(cardId);
 }
@@ -105,7 +105,7 @@ export async function unblockCard(cardId: number, password: string) {
   defaultFunctions.verifyPassword(currentCard, password);
 
   if (!currentCard.isBlocked)
-    throw { type: "error_block", message: "This card is already unblocked" };
+    throw { type: "error_conflict", message: "This card is already unblocked" };
 
   return await cardRepository.unblockCard(cardId);
 }

@@ -22,7 +22,7 @@ export async function validateOnlinePurchase(
     throw { type: "error_badRequest", message: "Card data does not match" };  
   }
   const expired= await defaultFunctions.isExpired(card);
-  if (expired) throw { type: "error_card_notActivated", message: "This card is expired!!" };
+  if (expired) throw { type: "error_unAuthorized", message: "This card is expired!!" };
   res.locals.cardId=currentCard?.id
   next()
 }

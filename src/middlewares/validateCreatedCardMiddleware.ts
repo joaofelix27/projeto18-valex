@@ -11,10 +11,10 @@ export async function validateCard(
   const activationData: activateType = req.body
   const {cardId}=activationData
   const { rows: card } = await cardRepository.getCard(cardId);
-  if (!card.length) throw { type: "error_card_notActivated", message: "Insert a valid cardId" };
+  if (!card.length) throw { type: "error_badRequest", message: "Insert a valid cardId" };
   res.locals.card=card[0]
   const expired= await defaultFunctions.isExpired(card);
-  if (expired) throw { type: "error_card_notActivated", message: "This card is expired!!" };
+  if (expired) throw { type: "error_unAuthorized", message: "This card is expired!!" };
   next()
 }
 
