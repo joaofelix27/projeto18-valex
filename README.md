@@ -55,7 +55,7 @@ POST /card/activate
 | :--------------- | :------- | :--------------------------------- |
 | `cardId`         | `integer`| **Required**. card Id              |
 | `password`       | `string` | **Required**. card password        |
-| `cardCVC`        | `string` | **Required**. card cvv             |
+| `cardCVC`        | `string` | **Required**. card cvc             |
 
 `Requirements:`
 
@@ -83,7 +83,7 @@ POST /card/block
 ### Unlock a card
 
 ```http
-POST /card/unlock
+POST /card/unblock
 ```
 
 #### Request:
@@ -112,7 +112,7 @@ POST /balance
 ### Recharge a card
 
 ```http
-POST /recharge
+POST /card/recharge
 ```
 
 #### Request:
