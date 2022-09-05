@@ -4,16 +4,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const { Pool } = pg;
+let databaseConfig;
 
-const databaseConfig = {
+if (process.env.MODE === "PROD") {
+  databaseConfig = {
     connectionString: process.env.DATABASE_URL,
-};
-
-// if (process.env.MODE === "PROD") {
-//     databaseConfig.ssl = {
-//         rejectUnauthorized: false,
-//     };
-// }
+    ssl: { rejectUnauthorized: false },
+  };
+} else {
+  databaseConfig = {
+    connectionString: process.env.DATABASE_URL,
+  };
+}
 
 const connection = new Pool(databaseConfig);
 
